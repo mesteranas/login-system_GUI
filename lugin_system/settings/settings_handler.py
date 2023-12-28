@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 import os
-appName="new-events"
+appName="lugin-system"
 cpath=os.path.join(os.getenv('appdata'),appName,"settings.ini")
 if not os.path.exists(os.path.join(os.getenv('appdata'),appName)):
 	os.mkdir(os.path.join(os.getenv('appdata'),appName))

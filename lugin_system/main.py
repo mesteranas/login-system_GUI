@@ -13,11 +13,23 @@ class main (qt.QMainWindow):
         super().__init__()
         self.setWindowTitle(app.name + _("version : ") + str(app.version))
         layout=qt.QVBoxLayout()
+        self.newUser=qt.QPushButton(_("create new user"))
+        self.newUser.setDefault(True)
+        self.newUser.clicked.connect(lambda:gui.forms.NewUser(self).exec())
+        layout.addWidget(self.newUser)
+        self.lugin=qt.QPushButton(_("login"))
+        self.lugin.setDefault(True)
+        self.lugin.clicked.connect(lambda:gui.forms.Login(self).exec())
+        layout.addWidget(self.lugin)
+        self.logout=qt.QPushButton(_("logout"))
+        self.logout.setDefault(True)
+        self.logout.clicked.connect(self.Logout)
+        layout.addWidget(self.logout)
+
         if not gui.userManager.is_login():
-            self.newUser=qt.QPushButton(_("create new user"))
-            self.newUser.setDefault(True)
-            self.newUser.clicked.connect(lambda:gui.forms.NewUser(self).exec())
-            layout.addWidget(self.newUser)
+            self.showHide(2)
+        else:
+            self.showHide(1)
         self.setting=qt.QPushButton(_("settings"))
         self.setting.setDefault(True)
         self.setting.clicked.connect(lambda: settings(self).exec())
@@ -62,7 +74,19 @@ class main (qt.QMainWindow):
                 event.ignore()
         else:
             self.close()
-
+    def showHide(self,option):
+        if option==1:
+            In=False
+            out=True
+        elif option==2:
+            In=True
+            out=False
+        self.newUser.setDisabled(out)
+        self.lugin.setDisabled(out)
+        self.logout.setDisabled(In)
+    def Logout(self):
+        gui.userManager.logout()
+        self.showHide(2)
 App=qt.QApplication([])
 w=main()
 w.show()

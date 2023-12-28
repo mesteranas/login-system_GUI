@@ -16,7 +16,16 @@ def is_login():
     user=models.Auth
     try:
         setion=models.get_session()
-        setion.query(user).filter_by(serial=get_serial_number()).first()
-        return True
+        log=setion.query(user).filter_by(serial=get_serial_number()).first()
+        if log:
+            a=True
+        else:
+            a=False
     except:
-        return False
+        a=False
+    return a
+def logout():
+    setion=models.get_session()
+    log=setion.query(models.Auth).filter_by(serial=get_serial_number()).first()
+    setion.delete(log)
+    setion.commit()

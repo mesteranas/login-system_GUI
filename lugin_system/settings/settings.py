@@ -1,4 +1,4 @@
-import guiTools
+import guiTools,gui
 import sys
 import os
 from . import settings_handler
@@ -36,6 +36,17 @@ class settings (qt.QDialog):
         layout1.addWidget(self.language)
         layout1.addWidget(self.ExitDialog)
         self.sectian.add(_("general"),layout1)
+        self.changePassword=qt.QPushButton(_("change password"))
+        self.changePassword.clicked.connect(lambda:gui.forms.changePassword(self).exec())
+        self.editProfile=qt.QPushButton(_("edit profile"))
+        self.editProfile.clicked.connect(lambda:gui.forms.EditProfile(self).exec())
+        self.delete=qt.QPushButton(_("delete account"))
+        layout2=qt.QVBoxLayout()
+        layout2.addWidget(self.changePassword)
+        layout2.addWidget(self.editProfile)
+        layout2.addWidget(self.delete)
+        if gui.userManager.is_login():
+            self.sectian.add(_("account"),layout2)
         layout.addWidget(self.ok)
         layout.addWidget(self.defolt)
         layout.addWidget(self.cancel)

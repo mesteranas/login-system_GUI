@@ -15,20 +15,7 @@ class user(base):
     bio=Column(String)
     user_name=Column(String)
     password=Column(String)
-    posts_count = Column(Integer, default=0)
     is_admin= Column(Boolean, default=False)
-class Post(base):
-    __tablename__ = 'posts'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(500))
-    body = Column(Text)
-    resources = Column(Text)
-    date = Column(DateTime(timezone=True), server_default=func.now())
-    User = Column(String)
-    is_view = Column(Boolean, default=False)
-    like = Column(Integer, default=0)
-    dislike = Column(Integer, default=0)
-    category = Column(String(100))
 class Auth(base):
     id=Column(Integer,primary_key=True)
     __tablename__="auth"
