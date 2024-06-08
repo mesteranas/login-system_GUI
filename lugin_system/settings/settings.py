@@ -41,6 +41,7 @@ class settings (qt.QDialog):
         self.editProfile=qt.QPushButton(_("edit profile"))
         self.editProfile.clicked.connect(lambda:gui.forms.EditProfile(self).exec())
         self.delete=qt.QPushButton(_("delete account"))
+        self.delete.clicked.connect(lambda:gui.forms.DeleteAccount(self).exec())
         layout2=qt.QVBoxLayout()
         layout2.addWidget(self.changePassword)
         layout2.addWidget(self.editProfile)

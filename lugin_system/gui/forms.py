@@ -7,7 +7,6 @@ class NewUser(qt.QDialog):
     def __init__(self,p):
         super().__init__(p)
         self.setWindowTitle(_("create new user"))
-        log=setion.query(models.user).filter_by(user_name=log1.User).first()
         self.first_name=qt.QLineEdit()
         self.first_name.setAccessibleName(_("first name"))
         self.last_name=qt.QLineEdit()
@@ -129,3 +128,28 @@ class EditProfile(qt.QDialog):
             log.bio=self.bio.text()
             setion.commit()
             self.close()
+class DeleteAccount(qt.QDialog):
+    def __init__(self,p):
+        super().__init__(p)
+        self.setWindowTitle(_("delete account"))
+        self.password=qt.QLineEdit()
+        self.password.setEchoMode(self.password.EchoMode.Password)
+        self.delete=qt.QPushButton(_("delete account"))
+        self.delete.clicked.connect(self.on_delete)
+        layout=qt.QVBoxLayout(self)
+        layout.addWidget(qt.QLabel(_("password")))
+        layout.addWidget(self.password)
+        layout.addWidget(self.delete)
+    def on_delete(self):
+        session=models.get_session()
+        authModel=session.query(models.Auth).filter_by(serial=userManager.get_serial_number()).first()
+        if authModel:
+            profileModel=session.query(models.user).filter_by(  user_name=authModel.User).first()
+            if profileModel.password==self.password.text():
+                session.delete(profileModel)
+                userManager.logout()
+                session.commit()
+                qt.QMessageBox.information(self,_("done"),_("account deleted"))
+                self.close()
+                return
+        qt.QMessageBox.warning(self,_("error"),_("can't delete this account , may be the password is wrong"))
